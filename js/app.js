@@ -319,8 +319,8 @@ const homeGallery = () => {
   const gridVideo = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["$q"])(".grid-video");
   const body = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["$q"])('body');
   const ovtl = gsap.timeline();
-
-  const mediaQueryMin = window.matchMedia('(min-width: 1400px)');
+  const closeButton = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["$q"])('.close-button');
+  const mediaQueryMin = window.matchMedia('(min-width: 1400px)'); 
 
 
   const homeGridSlider = new Swiper('.home-grid-slider', {
@@ -333,7 +333,7 @@ const homeGallery = () => {
         768: {       
           slidesPerView: 8, 
           spaceBetween: 10, 
-        },
+        }, 
         1400: {        
           slidesPerView: 10, 
           spaceBetween: 20, 
@@ -347,27 +347,29 @@ const homeGallery = () => {
   });
 
 
-  const GridSingleDefaultWidth = galleryItemsSingle.offsetWidth;  
 
 
-  const changeText = (title, songTitle) =>{
-     
+  const changeText = (title, songTitle) =>{     
     const tl = gsap.timeline(); 
     tl.to('.home-grid-info .hide', {opacity: 1});
     tl.to('.home-grid-info .title',{text:title, duration: .9, ease: "circ.inOut"}, "-=.5");
     tl.to('.home-grid-info p', {text:songTitle, duration: .9, ease: "circ.inOut"}, "-=1");
   }
 
-  Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["$q"])('.close-button').addEventListener("click", (e) => {
-      ovtl.reverse();
-      gridVideo.pause(); 
-  });
+  if(closeButton != null){
+    closeButton.addEventListener("click", (e) => {
+        ovtl.reverse();
+        gridVideo.pause(); 
+    });
+  }
 
-
-  video.forEach((element) => {
+  video.forEach((element) => { 
     element.pause;
   });
 
+  if(galleryItems != null && galleryItemsSingle != null){   
+    const GridSingleDefaultWidth = galleryItemsSingle.offsetWidth;  
+    
   galleryItems.forEach((element) => {
 
     if(mediaQueryMin.matches){
@@ -430,6 +432,8 @@ const homeGallery = () => {
     });
   });
 
+}
+
 
   //Bottom homepage buttons
   if(Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["$q"])('.single-mode') != null){
@@ -458,34 +462,43 @@ const homeGallery = () => {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "homeCanvas", function() { return homeCanvas; });
+/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+
+
 const homeCanvas = () => {
+  const videoCanvas = Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["$q"])('#video');
+  if (videoCanvas) {
+      
+    var ctx = canvas.getContext("2d"),
+      sw = 150,
+      frame = document.createElement("canvas"),
+      fctx = frame.getContext("2d");
 
-
-
-    var ctx = canvas.getContext('2d'),
-    sw = 150,
-    frame = document.createElement("canvas"),
-    fctx = frame.getContext("2d");
-    
     frame.width = 1455;
-    frame.height = 912; 
+    frame.height = 912;
 
-
-    
     video.addEventListener("playing", sliceAndDice, false);
     function sliceAndDice() {
-    
-    fctx.drawImage(video, 0, 0); 
-    
-    for (var x = 0; x < frame.width; x += sw) {
-        var y = Math.sin(x * 2);
-        ctx.drawImage(frame, x, 0, sw, frame.height,  
-            x * 1.1, y, sw, frame.height); 
-    }
-    requestAnimationFrame(sliceAndDice);
-    }
-}
+      fctx.drawImage(video, 0, 0);
 
+      for (var x = 0; x < frame.width; x += sw) {
+        var y = Math.sin(x * 2);
+        ctx.drawImage(
+          frame,
+          x,
+          0,
+          sw,
+          frame.height,
+          x * 1.1,
+          y,
+          sw,
+          frame.height
+        );
+      }
+      requestAnimationFrame(sliceAndDice);
+    }
+  }
+};
 
 
 /***/ }),
